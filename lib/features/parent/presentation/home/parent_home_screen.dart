@@ -172,7 +172,7 @@ class _TimelineItem extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(color: event.color, shape: BoxShape.circle, // Solid Color
-                    boxShadow: [BoxShadow(color: event.color.withOpacity(0.4), blurRadius: 4, offset: const Offset(0, 2))],
+                    boxShadow: [BoxShadow(color: event.color.withValues(alpha: 0.4), blurRadius: 4, offset: const Offset(0, 2))],
                   ),
                   child: Icon(event.icon, size: 20, color: Colors.white), // White Icon
                 ),
@@ -214,7 +214,7 @@ class _TimelineItem extends StatelessWidget {
                         errorBuilder: (context, error, stackTrace) {
                            return Container(
                              height: 180, width: double.infinity,
-                             color: DesignSystem.parentCoral.withOpacity(0.1),
+                             color: DesignSystem.parentCoral.withValues(alpha: 0.1),
                              child: const Icon(Icons.broken_image_rounded, color: DesignSystem.parentCoral),
                            );
                         },

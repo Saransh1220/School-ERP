@@ -65,10 +65,10 @@ class NavPillV2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.7), // Semi-transparent for blur
+        color: Colors.white.withValues(alpha: 0.7), // Semi-transparent for blur
         borderRadius: BorderRadius.circular(50),
         boxShadow: DesignSystem.glowShadow, // Colored glow
-        border: Border.all(color: Colors.white.withOpacity(0.5)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.5)),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(50),

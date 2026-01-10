@@ -113,7 +113,7 @@ class _ContactTile extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(color: DesignSystem.parentMint.withOpacity(0.2), shape: BoxShape.circle),
+              decoration: BoxDecoration(color: DesignSystem.parentMint.withValues(alpha: 0.2), shape: BoxShape.circle),
               child: const Icon(Icons.phone_rounded, color: Colors.green),
             ),
             const SizedBox(width: 16),

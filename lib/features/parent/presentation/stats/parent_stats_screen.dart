@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../config/design_system.dart';
 import '../../../../core/widgets/v2/app_card.dart';
 import '../../../../core/widgets/v2/glass_header.dart';
+import '../../../common/presentation/widgets/attendance_card.dart';
 
 class ParentStatsScreen extends StatelessWidget {
   const ParentStatsScreen({super.key});
@@ -44,66 +45,8 @@ class ParentStatsScreen extends StatelessWidget {
   }
 
   Widget _buildAttendanceChart() {
-    return AppCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-               Text("Attendance", style: DesignSystem.fontBody.copyWith(fontWeight: FontWeight.bold)),
-               Text("98%", style: DesignSystem.fontHeader.copyWith(fontSize: 24, color: DesignSystem.parentBlue)),
-            ],
-          ),
-          const SizedBox(height: 24),
-          SizedBox(
-            height: 180,
-            child: LineChart(
-               LineChartData(
-                 gridData: const FlGridData(show: false),
-                 titlesData: FlTitlesData(
-                   leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                   topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                   rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                   bottomTitles: AxisTitles(
-                     sideTitles: SideTitles(
-                       showTitles: true,
-                       interval: 1, // Fix duplicate labels
-                       getTitlesWidget: (value, meta) {
-                         const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-                         if (value.toInt() < 0 || value.toInt() >= days.length) return const SizedBox();
-                         return Padding(
-                           padding: const EdgeInsets.only(top: 8.0),
-                           child: Text(days[value.toInt()], style: DesignSystem.fontSmall),
-                         );
-                       },
-                     ),
-                   ),
-                 ),
-                 borderData: FlBorderData(show: false),
-                 lineBarsData: [
-                   LineChartBarData(
-                     spots: const [
-                       FlSpot(0, 1),
-                       FlSpot(1, 1),
-                       FlSpot(2, 0.5), // Late
-                       FlSpot(3, 1),
-                       FlSpot(4, 1),
-                     ],
-                     isCurved: true,
-                     color: DesignSystem.parentSky,
-                     barWidth: 6,
-                     isStrokeCapRound: true,
-                     dotData: const FlDotData(show: false),
-                     belowBarData: BarAreaData(show: true, color: DesignSystem.parentSky.withOpacity(0.1)),
-                   ),
-                 ],
-               ),
-            ),
-          ),
-        ],
-      ),
-    );
+    return const AttendanceHistoryCard();
+    // return const AppCard(child: Center(child: Text("Attendance Module Placeholder")));
   }
 
   Widget _buildMoodGrid() {
@@ -200,7 +143,7 @@ class _StatTile extends StatelessWidget {
         children: [
           Container(
              padding: const EdgeInsets.all(12),
-             decoration: BoxDecoration(color: color.withOpacity(0.2), shape: BoxShape.circle),
+             decoration: BoxDecoration(color: color.withValues(alpha: 0.2), shape: BoxShape.circle),
              child: Text(icon, style: const TextStyle(fontSize: 24)),
           ),
           const SizedBox(height: 8),
