@@ -111,23 +111,17 @@ class _NavItem extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: isSelected ? DesignSystem.parentCoral.withOpacity(0.15) : Colors.transparent, // Coral tint
-          shape: BoxShape.circle,
+          color: isSelected ? DesignSystem.parentTeal : Colors.transparent, // Vibrant Teal
+          borderRadius: BorderRadius.circular(16), // Squircle Shape
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               icon,
-              color: isSelected ? DesignSystem.parentCoral : DesignSystem.textGreyBlue, // Coral active, Grey inactive
+              color: isSelected ? Colors.white : DesignSystem.textGreyBlue, // White Active Icon
               size: 24,
             ),
-            if (isSelected) 
-              Container(
-                margin: const EdgeInsets.only(top: 4),
-                height: 4, width: 4,
-                decoration: const BoxDecoration(color: DesignSystem.parentCoral, shape: BoxShape.circle),
-              )
           ],
         ),
       ),

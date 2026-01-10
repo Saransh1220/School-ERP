@@ -68,6 +68,7 @@ class ParentStatsScreen extends StatelessWidget {
                    bottomTitles: AxisTitles(
                      sideTitles: SideTitles(
                        showTitles: true,
+                       interval: 1, // Fix duplicate labels
                        getTitlesWidget: (value, meta) {
                          const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
                          if (value.toInt() < 0 || value.toInt() >= days.length) return const SizedBox();
@@ -111,7 +112,7 @@ class ParentStatsScreen extends StatelessWidget {
       shrinkWrap: true,
       mainAxisSpacing: 16,
       crossAxisSpacing: 16,
-      childAspectRatio: 1.5,
+      childAspectRatio: 1.3, // Taller tiles to prevent overflow
       physics: const NeverScrollableScrollPhysics(),
       children: [
         _StatTile(label: "Happy", value: "3 Days", color: DesignSystem.parentYellow, icon: "😊"),
@@ -123,21 +124,61 @@ class ParentStatsScreen extends StatelessWidget {
   Widget _buildActivityPie() {
      return AppCard(
        padding: const EdgeInsets.all(24),
-       child: SizedBox(
-         height: 200,
-         child: PieChart(
-           PieChartData(
-             sections: [
-               PieChartSectionData(color: DesignSystem.parentCoral, value: 40, title: "Art", radius: 50, showTitle: false),
-               PieChartSectionData(color: DesignSystem.parentMint, value: 30, title: "Play", radius: 50, showTitle: false),
-               PieChartSectionData(color: DesignSystem.parentLavender, value: 30, title: "Music", radius: 50, showTitle: false),
-             ],
-             centerSpaceRadius: 40,
-             sectionsSpace: 4,
+       child: Column(
+         children: [
+           SizedBox(
+             height: 200,
+             child: PieChart(
+               PieChartData(
+                 sections: [
+                   PieChartSectionData(color: DesignSystem.parentOrange, value: 35, title: "", radius: 45),
+                   PieChartSectionData(color: DesignSystem.parentGreen, value: 40, title: "", radius: 55), // Highlight
+                   PieChartSectionData(color: DesignSystem.parentTeal, value: 25, title: "", radius: 45),
+                 ],
+                 centerSpaceRadius: 50,
+                 sectionsSpace: 4,
+               ),
+             ),
            ),
-         ),
+           const SizedBox(height: 24),
+           // Detailed Metrics Legend
+           Row(
+             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+             children: [
+               _ChartLegend(color: DesignSystem.parentGreen, label: "Gross Motor", value: "40%"),
+               _ChartLegend(color: DesignSystem.parentOrange, label: "Fine Motor", value: "35%"),
+               _ChartLegend(color: DesignSystem.parentTeal, label: "Social", value: "25%"),
+             ],
+           ),
+         ],
        ),
      );
+  }
+}
+
+class _ChartLegend extends StatelessWidget {
+  final Color color;
+  final String label;
+  final String value;
+  
+  const _ChartLegend({required this.color, required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(width: 8, height: 8, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
+            const SizedBox(width: 8),
+            Text(label, style: DesignSystem.fontSmall.copyWith(fontSize: 12)),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(value, style: DesignSystem.fontTitle.copyWith(fontSize: 16)),
+      ],
+    );
   }
 }
 

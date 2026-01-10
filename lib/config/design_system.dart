@@ -2,49 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DesignSystem {
-  // --- Core Palette (Storybook) ---
-  static const Color creamWhite = Color(0xFFFFFDF9); // Warm background
-  static const Color offWhite = creamWhite; // Compatibility alias
+  // --- Core Palette (Leo's Journal Theme) ---
+  static const Color iceWhite = Color(0xFFFAFAFA); // Clean Off-White
+  static const Color creamWhite = iceWhite; 
+  static const Color offWhite = iceWhite; 
   static const Color pureWhite = Colors.white;
   
-  static const Color textNavy = Color(0xFF2C3A4B); // Soft Navy titles
-  static const Color textGreyBlue = Color(0xFF6B7A90); // Muted body
+  static const Color textNavy = Color(0xFF263238); // Dark Navy/Black for High Contrast Headers
+  static const Color textGreyBlue = Color(0xFF78909C); // Cool Grey for secondary text
 
-  // Compatibility Aliases (Restoring these to fix build errors)
+  // Compatibility Aliases 
   static const Color textMain = textNavy; 
   static const Color textSecondary = textGreyBlue;
 
-  // --- Storybook Primaries ---
-  static const Color parentCoral = Color(0xFFFF8A80); // Warmth/Care
-  static const Color parentSky = Color(0xFF7EC8FF); // Trust/Calm
-  static const Color parentYellow = Color(0xFFFFE082); // Happiness
-  static const Color parentMint = Color(0xFF8DE6C3); // Health
-  static const Color parentLavender = Color(0xFFC7B7FF); // Creativity
+  // --- Vibrant Primaries (From Images) ---
+  static const Color parentTeal = Color(0xFF00BFA5); // Vibrant Teal (Primary Action)
+  static const Color parentOrange = Color(0xFFFF9100); // Warm Orange (Food)
+  static const Color parentGreen = Color(0xFF00C853); // Vibrant Green (Status)
+  
+  // Re-mapping Storybook -> Vibrant Image Theme
+  static const Color parentDeepTeal = parentTeal; 
+  static const Color parentOceanBlue = parentTeal; 
+  static const Color parentActiveGreen = parentGreen; 
+  
+  static const Color parentCyan = Color(0xFFE0F2F1); // Very light teal for backgrounds
+  static const Color parentLime = parentOrange; // Map Yellow/Lime to Orange
+  
+  static const Color parentCoral = parentOrange; 
+  static const Color parentSky = parentCyan;   
+  static const Color parentYellow = parentOrange; 
+  static const Color parentLavender = Color(0xFF26A69A); // Secondary Teal
+  static const Color parentMint = parentGreen; 
 
-  // Mapped for compatibility (updating old references if any remaining)
-  static const Color parentBlue = parentSky;
-  static const Color parentPeach = parentCoral; 
-  static const Color parentAmber = parentYellow;
+  // Mapped for compatibility 
+  static const Color parentBlue = parentTeal;
+  static const Color parentPeach = parentOrange; 
+  static const Color parentAmber = parentOrange;
 
-  // --- Role Primaries (Teachers/Admin kept same or compatible) ---
+  // --- Role Primaries (Restored) ---
   static const Color teacherBlue = Color(0xFF64B5F6); 
   static const Color teacherYellow = Color(0xFFFFF176); 
   static const Color adminNavy = Color(0xFF37474F); 
   static const Color adminTeal = Color(0xFF80CBC4); 
 
-  // --- Gradients (Soft & Emotional) ---
-  static const LinearGradient storyGradient = LinearGradient(
-    colors: [parentSky, parentMint],
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-  );
-
-  static const LinearGradient parentGradient = LinearGradient(
-    colors: [Color(0xFFFFF0EC), creamWhite], // Coral tint -> Cream
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
-
+  // --- Gradients (Restored) ---
   static const LinearGradient teacherGradient = LinearGradient(
     colors: [Color(0xFFE3F2FD), Color(0xFFFFFDE7)],
     begin: Alignment.topCenter,
@@ -56,24 +57,37 @@ class DesignSystem {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
-  
+
+  // --- Gradients (Subtle to None - Clean Look) ---
+  static const LinearGradient storyGradient = LinearGradient(
+    colors: [parentTeal, parentTeal], // Solid line look
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+  );
+
+  static const LinearGradient parentGradient = LinearGradient(
+    colors: [Colors.white, Colors.white], // Clean White Header
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
   static const LinearGradient cardGradient = LinearGradient(
-     colors: [pureWhite, Color(0xFFFAFAFA)],
+     colors: [Colors.white, Colors.white], // Clean White Cards
      begin: Alignment.topLeft,
      end: Alignment.bottomRight
   );
 
-  // --- Shadows (Colored Glows) ---
+  // --- Shadows (Soft & Subtle) ---
   static List<BoxShadow> glowShadow = [
     BoxShadow(
-      color: const Color(0xFF8A9AB9).withOpacity(0.1), // Blue-grey tint
-      blurRadius: 20,
+      color: const Color(0xFF37474F).withOpacity(0.08), // Soft grey shadow
+      blurRadius: 16,
       offset: const Offset(0, 8),
       spreadRadius: 0,
     ),
     BoxShadow(
-      color: const Color(0xFFFF8A80).withOpacity(0.05), // Warm coral tint
-      blurRadius: 5,
+      color: const Color(0xFF37474F).withOpacity(0.05),
+      blurRadius: 4,
       offset: const Offset(0, 2),
       spreadRadius: 0,
     ),

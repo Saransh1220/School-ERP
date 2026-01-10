@@ -61,44 +61,22 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/login',
         builder: (context, state) => const RoleSelectionScreen(),
       ),
-      StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) {
-          return DashboardShell(navigationShell: navigationShell);
-        },
-        branches: [
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: '/home',
-                builder: (context, state) => const HomeScreen(),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: '/calendar',
-                builder: (context, state) => const Scaffold(body: Center(child: Text("Calendar Mock"))),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: '/gallery',
-                builder: (context, state) => const Scaffold(body: Center(child: Text("Gallery Mock"))),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: '/profile',
-                builder: (context, state) => const Scaffold(body: Center(child: Text("Profile Mock"))),
-              ),
-            ],
-          ),
-        ],
+      // DIRECT ROUTES (No Shell Wrapper) to allow Role-Specific Shells (like ParentShell) to control full UI
+      GoRoute(
+        path: '/home',
+        builder: (context, state) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: '/calendar',
+        builder: (context, state) => const Scaffold(body: Center(child: Text("Calendar Mock"))),
+      ),
+      GoRoute(
+        path: '/gallery',
+        builder: (context, state) => const Scaffold(body: Center(child: Text("Gallery Mock"))),
+      ),
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) => const Scaffold(body: Center(child: Text("Profile Mock"))),
       ),
     ],
   );
