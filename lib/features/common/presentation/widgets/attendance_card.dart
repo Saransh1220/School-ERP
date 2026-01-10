@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../config/design_system.dart';
 import '../../../../core/widgets/v2/app_card.dart';
+import '../../data/parent_repository.dart';
 
 class AttendanceHistoryCard extends StatefulWidget {
   const AttendanceHistoryCard({super.key});
@@ -13,6 +14,13 @@ class AttendanceHistoryCard extends StatefulWidget {
 class _AttendanceHistoryCardState extends State<AttendanceHistoryCard> {
   String _selectedFilter = 'Week'; // Week, Month, Custom
   DateTimeRange? _selectedDateRange;
+  late Future<List<AttendanceRecord>> _historyFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _historyFuture = ParentRepository.getAttendanceHistory();
+  }
 
   Future<void> _selectDateRange() async {
     final DateTime now = DateTime.now();
@@ -113,13 +121,23 @@ class _AttendanceHistoryCardState extends State<AttendanceHistoryCard> {
           const SizedBox(height: 24),
 
           // List Content
-          ListView.separated(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: 5, // Mock 5 items
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
-            itemBuilder: (context, index) {
-              return _AttendanceRow(index: index).animate().fadeIn(delay: (50 * index).ms).slideX();
+          FutureBuilder<List<AttendanceRecord>>(
+            future: _historyFuture,
+            builder: (context, snapshot) {
+               if (!snapshot.hasData) {
+                return const SizedBox(height: 200, child: Center(child: CircularProgressIndicator()));
+              }
+              final records = snapshot.data!;
+
+              return ListView.separated(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: records.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                itemBuilder: (context, index) {
+                  return _AttendanceRow(record: records[index]).animate().fadeIn(delay: (50 * index).ms).slideX();
+                },
+              );
             },
           ),
         ],
@@ -161,13 +179,12 @@ class _FilterTab extends StatelessWidget {
 }
 
 class _AttendanceRow extends StatelessWidget {
-  final int index;
-  const _AttendanceRow({required this.index});
+  final AttendanceRecord record;
+  const _AttendanceRow({required this.record});
 
   @override
   Widget build(BuildContext context) {
-    // Mock Data Logic
-    final status = index == 2 ? "Late" : (index == 4 ? "Absent" : "Present");
+    final status = record.status;
     final color = status == "Present" ? DesignSystem.parentGreen 
         : (status == "Late" ? DesignSystem.parentOrange : Colors.redAccent);
     final icon = status == "Present" ? Icons.check_circle_rounded
@@ -197,13 +214,13 @@ class _AttendanceRow extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Oct ${25 - index}", style: DesignSystem.fontBody.copyWith(fontWeight: FontWeight.bold, fontSize: 14)),
+                  Text("Oct ${record.date.day}", style: DesignSystem.fontBody.copyWith(fontWeight: FontWeight.bold, fontSize: 14)),
                   Text(status, style: DesignSystem.fontSmall.copyWith(fontSize: 12, color: color)),
                 ],
               ),
             ],
           ),
-          Text("9:00 AM - 3:30 PM", style: DesignSystem.fontSmall.copyWith(fontSize: 12)),
+          Text("${record.checkInTime} - ${record.checkOutTime}", style: DesignSystem.fontSmall.copyWith(fontSize: 12)),
         ],
       ),
     );

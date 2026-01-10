@@ -4,9 +4,23 @@ import '../../../../config/design_system.dart';
 import '../../../../core/widgets/v2/app_card.dart';
 import '../../../../core/widgets/v2/glass_header.dart';
 import '../../../common/presentation/widgets/attendance_card.dart';
+import '../../data/parent_repository.dart';
 
-class ParentStatsScreen extends StatelessWidget {
+class ParentStatsScreen extends StatefulWidget {
   const ParentStatsScreen({super.key});
+
+  @override
+  State<ParentStatsScreen> createState() => _ParentStatsScreenState();
+}
+
+class _ParentStatsScreenState extends State<ParentStatsScreen> {
+  late Future<StatsData> _statsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _statsFuture = ParentRepository.getChildStats();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,23 +30,33 @@ class ParentStatsScreen extends StatelessWidget {
         children: [
           SingleChildScrollView(
             padding: const EdgeInsets.fromLTRB(24, 120, 24, 120),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Weekly Insights", style: DesignSystem.fontTitle),
-                const SizedBox(height: 16),
-                _buildAttendanceChart(),
-                const SizedBox(height: 24),
-                
-                Text("Mood Trends", style: DesignSystem.fontTitle),
-                 const SizedBox(height: 16),
-                _buildMoodGrid(),
-                 const SizedBox(height: 24),
+            child: FutureBuilder<StatsData>(
+              future: _statsFuture,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const SizedBox(height: 400, child: Center(child: CircularProgressIndicator()));
+                }
+                final stats = snapshot.data!;
 
-                Text("Activity Mix", style: DesignSystem.fontTitle),
-                 const SizedBox(height: 16),
-                _buildActivityPie(),
-              ],
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Weekly Insights", style: DesignSystem.fontTitle),
+                    const SizedBox(height: 16),
+                    _buildAttendanceChart(),
+                    const SizedBox(height: 24),
+                    
+                    Text("Mood Trends", style: DesignSystem.fontTitle),
+                     const SizedBox(height: 16),
+                    _buildMoodGrid(stats.moodCounts),
+                     const SizedBox(height: 24),
+
+                    Text("Activity Mix", style: DesignSystem.fontTitle),
+                     const SizedBox(height: 16),
+                    _buildActivityPie(stats.activityDistribution),
+                  ],
+                );
+              },
             ),
           ),
            const Positioned(
@@ -46,10 +70,9 @@ class ParentStatsScreen extends StatelessWidget {
 
   Widget _buildAttendanceChart() {
     return const AttendanceHistoryCard();
-    // return const AppCard(child: Center(child: Text("Attendance Module Placeholder")));
   }
 
-  Widget _buildMoodGrid() {
+  Widget _buildMoodGrid(Map<String, int> moodCounts) {
     return GridView.count(
       crossAxisCount: 2,
       shrinkWrap: true,
@@ -58,13 +81,27 @@ class ParentStatsScreen extends StatelessWidget {
       childAspectRatio: 1.3, // Taller tiles to prevent overflow
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        _StatTile(label: "Happy", value: "3 Days", color: DesignSystem.parentYellow, icon: "😊"),
-        _StatTile(label: "Calm", value: "2 Days", color: DesignSystem.parentSky, icon: "😌"),
+        _StatTile(
+          label: "Happy",
+          value: "${moodCounts['Happy'] ?? 0} Days",
+          color: DesignSystem.parentYellow,
+          icon: "😊",
+        ),
+        _StatTile(
+          label: "Calm",
+          value: "${moodCounts['Calm'] ?? 0} Days",
+          color: DesignSystem.parentSky,
+          icon: "😌",
+        ),
       ],
     );
   }
   
-  Widget _buildActivityPie() {
+  Widget _buildActivityPie(Map<String, double> distribution) {
+     final gross = distribution['Gross Motor'] ?? 0;
+     final fine = distribution['Fine Motor'] ?? 0;
+     final social = distribution['Social'] ?? 0;
+
      return AppCard(
        padding: const EdgeInsets.all(24),
        child: Column(
@@ -74,9 +111,9 @@ class ParentStatsScreen extends StatelessWidget {
              child: PieChart(
                PieChartData(
                  sections: [
-                   PieChartSectionData(color: DesignSystem.parentOrange, value: 35, title: "", radius: 45),
-                   PieChartSectionData(color: DesignSystem.parentGreen, value: 40, title: "", radius: 55), // Highlight
-                   PieChartSectionData(color: DesignSystem.parentTeal, value: 25, title: "", radius: 45),
+                   PieChartSectionData(color: DesignSystem.parentOrange, value: fine, title: "", radius: 45),
+                   PieChartSectionData(color: DesignSystem.parentGreen, value: gross, title: "", radius: 55), // Highlight
+                   PieChartSectionData(color: DesignSystem.parentTeal, value: social, title: "", radius: 45),
                  ],
                  centerSpaceRadius: 50,
                  sectionsSpace: 4,
@@ -88,9 +125,9 @@ class ParentStatsScreen extends StatelessWidget {
            Row(
              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
              children: [
-               _ChartLegend(color: DesignSystem.parentGreen, label: "Gross Motor", value: "40%"),
-               _ChartLegend(color: DesignSystem.parentOrange, label: "Fine Motor", value: "35%"),
-               _ChartLegend(color: DesignSystem.parentTeal, label: "Social", value: "25%"),
+               _ChartLegend(color: DesignSystem.parentGreen, label: "Gross Motor", value: "${gross.toInt()}%"),
+               _ChartLegend(color: DesignSystem.parentOrange, label: "Fine Motor", value: "${fine.toInt()}%"),
+               _ChartLegend(color: DesignSystem.parentTeal, label: "Social", value: "${social.toInt()}%"),
              ],
            ),
          ],
