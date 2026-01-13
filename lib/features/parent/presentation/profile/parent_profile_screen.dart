@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../config/design_system.dart';
 import '../../../../core/widgets/v2/app_card.dart';
 import '../../../../core/widgets/v2/glass_header.dart';
 import '../../data/parent_repository.dart';
+import '../../../auth/presentation/auth_providers.dart';
 
-class ParentProfileScreen extends StatefulWidget {
+class ParentProfileScreen extends ConsumerStatefulWidget {
   const ParentProfileScreen({super.key});
 
   @override
-  State<ParentProfileScreen> createState() => _ParentProfileScreenState();
+  ConsumerState<ParentProfileScreen> createState() => _ParentProfileScreenState();
 }
 
-class _ParentProfileScreenState extends State<ParentProfileScreen> {
+class _ParentProfileScreenState extends ConsumerState<ParentProfileScreen> {
   late Future<StudentProfile> _profileFuture;
 
   @override
@@ -80,11 +82,28 @@ class _ParentProfileScreenState extends State<ParentProfileScreen> {
                     const SizedBox(height: 24),
                     
                     // Emergency Contacts (Still Mocked or could comprise list in model)
-                    const Align(alignment: Alignment.centerLeft, child: Text("Emergency Contacts", style: DesignSystem.fontTitle)),
+                    Align(alignment: Alignment.centerLeft, child: Text("Emergency Contacts", style: DesignSystem.fontTitle)),
                     const SizedBox(height: 12),
                     const _ContactTile(name: "Sarah (Mom)", phone: "+1 234 567 890"),
                     const SizedBox(height: 12),
                     const _ContactTile(name: "Mike (Dad)", phone: "+1 987 654 321"),
+
+                    const SizedBox(height: 40),
+                    // Logout Helper
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                           ref.read(authControllerProvider.notifier).logout();
+                        },
+                        icon: const Icon(Icons.logout, color: Colors.red),
+                        label: const Text("Sign Out", style: TextStyle(color: Colors.red)),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          side: BorderSide(color: Colors.red.withOpacity(0.5)),
+                        ),
+                      ),
+                    ),
                   ],
                 );
               },

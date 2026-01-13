@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1077447299802",
+    "project_id": "saransh-school-lms",
+    "storage_bucket": "saransh-school-lms.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077447299802:android:9ee4d4e52d8d609d188be3",
+        "android_client_info": {
+          "package_name": "com.saran.lms.school_lms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARBV3Ru9KTWqNBMB-zwkURR1AZ-i8fR4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077447299802:android:848fd1d9d7bf896c188be3",
+        "android_client_info": {
+          "package_name": "com.schoollms.school_lms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARBV3Ru9KTWqNBMB-zwkURR1AZ-i8fR4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

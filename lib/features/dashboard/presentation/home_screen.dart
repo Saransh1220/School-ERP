@@ -4,7 +4,7 @@ import '../../auth/domain/user_entity.dart';
 import '../../auth/presentation/auth_providers.dart';
 import 'v2/parent_home_story.dart';
 import 'v2/teacher_home_taskboard.dart';
-import 'v2/admin_home_analytics.dart';
+import '../../admin/presentation/admin_dashboard.dart';
 import '../../parent/presentation/parent_shell.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -23,7 +23,7 @@ class HomeScreen extends ConsumerWidget {
       case UserRole.teacher:
         return const TeacherHomeTaskBoard();
       case UserRole.admin:
-        return const AdminHomeAnalytics();
+        return const AdminDashboardScreen();
     }
   }
 }

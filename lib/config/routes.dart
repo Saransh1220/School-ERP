@@ -5,9 +5,14 @@ import '../core/utils/go_router_refresh_stream.dart';
 import '../features/auth/domain/user_entity.dart';
 import '../features/auth/presentation/auth_providers.dart';
 import '../features/auth/presentation/splash_screen.dart';
-import '../features/auth/presentation/role_selection_screen.dart';
+import '../features/auth/presentation/login_screen.dart';
 import '../features/dashboard/presentation/dashboard_shell.dart';
 import '../features/dashboard/presentation/home_screen.dart';
+import '../features/admin/presentation/admin_dashboard.dart';
+import '../features/admin/presentation/section_management_screen.dart';
+import '../features/admin/presentation/class_management_screen.dart';
+import '../features/admin/presentation/teacher_management_screen.dart';
+import '../features/admin/presentation/student_management_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   // Use a ValueNotifier that notifies when the auth state changes
@@ -45,7 +50,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       }
 
       if (hasUser && (isLogin || isSplash)) {
-        print('REDIRECT: Logged in, going to home');
+        if (authState.value!.role == UserRole.admin) {
+           print('REDIRECT: Admin logged in, going to /admin');
+           return '/admin';
+        }
+        print('REDIRECT: Logged in, going to /home');
         return '/home';
       }
 
@@ -59,9 +68,32 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/login',
-        builder: (context, state) => const RoleSelectionScreen(),
+        builder: (context, state) => const LoginScreen(),
       ),
-      // DIRECT ROUTES (No Shell Wrapper) to allow Role-Specific Shells (like ParentShell) to control full UI
+      // --- Admin Routes ---
+      GoRoute(
+        path: '/admin',
+        builder: (context, state) => const AdminDashboardScreen(),
+        routes: [
+          GoRoute(
+            path: 'classes',
+            builder: (context, state) => const ClassManagementScreen(),
+          ),
+          GoRoute(
+            path: 'sections',
+            builder: (context, state) => const SectionManagementScreen(),
+          ),
+          GoRoute(
+            path: 'teachers',
+            builder: (context, state) => const TeacherManagementScreen(),
+          ),
+          GoRoute(
+            path: 'students',
+            builder: (context, state) => const StudentManagementScreen(),
+          ),
+        ],
+      ),
+      // --- Parent/Other Routes ---
       GoRoute(
         path: '/home',
         builder: (context, state) => const HomeScreen(),

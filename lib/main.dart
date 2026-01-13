@@ -5,7 +5,29 @@ import 'config/theme.dart';
 import 'features/auth/presentation/auth_providers.dart';
 import 'features/auth/domain/user_entity.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+     await Firebase.initializeApp(
+       options: DefaultFirebaseOptions.currentPlatform,
+     );
+     // Disable persistence to force immediate server errors when DB is missing
+     try {
+       FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: false);
+     } catch (e) {
+       print("Error setting persistence: $e");
+     }
+  } catch (e) {
+     print("Firebase Init Error (Mocking for now): $e");
+     // Fallback for development if file missing 
+     if (Firebase.apps.isEmpty) {
+        // await Firebase.initializeApp(); // Try default?
+     }
+  }
   runApp(const ProviderScope(child: SchoolApp()));
 }
 

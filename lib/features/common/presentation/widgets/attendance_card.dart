@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../config/design_system.dart';
 import '../../../../core/widgets/v2/app_card.dart';
-import '../../data/parent_repository.dart';
+import '../../../parent/data/parent_repository.dart';
 
 class AttendanceHistoryCard extends StatefulWidget {
   const AttendanceHistoryCard({super.key});

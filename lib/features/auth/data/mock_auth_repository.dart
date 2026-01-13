@@ -27,7 +27,7 @@ class MockAuthRepository implements AuthRepository {
     switch (role) {
       case UserRole.admin:
         user = const UserEntity(
-          id: 'admin_1', 
+          uid: 'admin_1', 
           name: 'Principal Skinner', 
           email: 'admin@school.com', 
           role: UserRole.admin,
@@ -36,7 +36,7 @@ class MockAuthRepository implements AuthRepository {
         break;
       case UserRole.teacher:
         user = const UserEntity(
-          id: 'teacher_1', 
+          uid: 'teacher_1', 
           name: 'Ms. Krabappel', 
           email: 'teacher@school.com', 
           role: UserRole.teacher,
@@ -45,7 +45,7 @@ class MockAuthRepository implements AuthRepository {
         break;
       case UserRole.parent:
         user = const UserEntity(
-          id: 'parent_1', 
+          uid: 'parent_1', 
           name: 'Homer Simpson', 
           email: 'parent@school.com', 
           role: UserRole.parent,

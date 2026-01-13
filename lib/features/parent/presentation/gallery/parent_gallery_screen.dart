@@ -73,7 +73,7 @@ class _GalleryCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        boxShadow: DesignSystem.softShadow,
+        boxShadow: DesignSystem.glowShadow,
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
